@@ -1,3 +1,4 @@
+#include <asm-generic/socket.h>
 #include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -5,6 +6,8 @@
 
 int serve_tcp(int port,int count) {
 	int result = socket(AF_INET,SOCK_STREAM,0);
+	int opt = 1;
+	setsockopt(result,SOL_SOCKET,SO_REUSEADDR|SO_REUSEPORT ,&opt,sizeof(opt));
 	if (result < 0) {
 		perror("serve_tcp:socket creation failed");
 		return result;
